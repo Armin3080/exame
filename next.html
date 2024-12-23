@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Human Body Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Human Body Quiz</h1>
+        </header>
+
+        <!-- Reading Section -->
+        <section class="reading">
+            <h2>Reading</h2>
+            <p>
+                The human body is a real wonder. It is sometimes good to think about our body and how it works. Our body is doing millions of jobs all the time. 
+                One of the most important parts of the body is blood. The heart pumps this red liquid around the body. This keeps us healthy and alive. 
+                More than half of blood is plasma. This is a clear and yellow liquid. It carries red and white cells. There are millions of red blood cells in one small drop of blood. 
+                They carry oxygen around the body and collect carbon dioxide from body parts. There are thousands of white cells in a drop of blood. They are bigger than red cells. 
+                They defend our body against microbes. 
+                This wonderful liquid is a great gift from Allah. We can thank Allah by keeping our body healthy. One way to do that is eating healthy food and doing daily exercises. 
+                Another way is to donate our blood to those who need it.
+            </p>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="quiz">
+            <h2>Quiz</h2>
+
+            <!-- True/False Questions -->
+            <div class="true-false">
+                <h3>True/False Questions</h3>
+                <form id="trueFalseForm">
+                    <label>
+                        1. Blood is pumped by the lungs. 
+                        <input type="text" id="tf1" placeholder="True or False">
+                    </label><br>
+                    <label>
+                        2. Plasma carries red and white cells. 
+                        <input type="text" id="tf2" placeholder="True or False">
+                    </label><br>
+                    <label>
+                        3. White cells are smaller than red cells. 
+                        <input type="text" id="tf3" placeholder="True or False">
+                    </label>
+                </form>
+            </div>
+
+            <!-- Multiple-Choice Questions -->
+            <div class="multiple-choice">
+                <h3>Multiple-Choice Questions</h3>
+                <form id="mcForm">
+                    <label>
+                        1. What does blood carry around the body?<br>
+                        <select id="mc1">
+                            <option value="A">A) Plasma</option>
+                            <option value="B">B) Carbon dioxide</option>
+                            <option value="C">C) Oxygen</option>
+                        </select>
+                    </label><br><br>
+
+                    <label>
+                        2. What defends the body against microbes?<br>
+                        <select id="mc2">
+                            <option value="A">A) Plasma</option>
+                            <option value="B">B) White blood cells</option>
+                            <option value="C">C) Red blood cells</option>
+                        </select>
+                    </label><br><br>
+
+                    <label>
+                        3. What is one way to thank Allah for the gift of blood?<br>
+                        <select id="mc3">
+                            <option value="A">A) Sleeping more</option>
+                            <option value="B">B) Eating healthy food and exercising</option>
+                            <option value="C">C) Drinking water</option>
+                        </select>
+                    </label>
+                </form>
+            </div>
+            <button onclick="checkAnswers()">Submit Answers</button>
+        </section>
+
+        <!-- Admin Section -->
+        <section class="admin" id="adminSection">
+            <h2>Admin Panel (Restricted Access)</h2>
+            <label for="adminPassword">Enter Admin Password:</label>
+            <input type="password" id="adminPassword">
+            <button onclick="showResults()">Access Results</button>
+            <div id="result"></div>
+        </section>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            tf: ["False", "True", "False"],
+            mc: ["C", "B", "B"]
+        };
+
+        function checkAnswers() {
+            const tfResults = [];
+            const mcResults = [];
+
+            // Check True/False
+            for (let i = 1; i <= 3; i++) {
+                const userAnswer = document.getElementById(`tf${i}`).value.trim();
+                tfResults.push(userAnswer === correctAnswers.tf[i - 1] ? "Correct" : "Incorrect");
+            }
+
+            // Check Multiple-Choice
+            for (let i = 1; i <= 3; i++) {
+                const userAnswer = document.getElementById(`mc${i}`).value;
+                mcResults.push(userAnswer === correctAnswers.mc[i - 1] ? "Correct" : "Incorrect");
+            }
+
+            // Save results in session storage
+            sessionStorage.setItem("tfResults", JSON.stringify(tfResults));
+            sessionStorage.setItem("mcResults", JSON.stringify(mcResults));
+
+            alert("Your answers have been submitted!");
+        }
+
+        function showResults() {
+            const password = document.getElementById("adminPassword").value;
+            if (password === "admin123") {
+                const tfResults = JSON.parse(sessionStorage.getItem("tfResults"));
+                const mcResults = JSON.parse(sessionStorage.getItem("mcResults"));
+
+                let result = "<h3>Results:</h3>";
+                tfResults.forEach((res, i) => result += `TF${i + 1}: ${res}<br>`);
+                mcResults.forEach((res, i) => result += `MC${i + 1}: ${res}<br>`);
+
+                document.getElementById("result").innerHTML = result;
+            } else {
+                alert("Incorrect password!");
+            }
+        }
+    </script>
+</body>
+</html>

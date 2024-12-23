@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endangered Animals Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        .btn {
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+            background: linear-gradient(90deg, #ff6a00, #ee0979);
+            border-radius: 50px;
+            overflow: hidden;
+            transition: 0.5s;
+            z-index: 1;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 300%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            transform: skewX(-30deg);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn:hover:before {
+            left: -50%;
+        }
+
+        .btn:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+    <div class="container">
+        <header>
+            <h1>Endangered Animals Quiz</h1>
+        </header>
+
+        <!-- Reading Section -->
+        <section class="reading">
+            <h2>Reading</h2>
+            <p>
+                Today, there are some endangered animals on Earth. It means that we can find only a few of them around us. Some examples are whales, pandas, tigers, and Asian elephants.
+                Humans destroy the natural homes of the animals in the forests, lakes, and plains. When the number of people on Earth increases, they need more places for living. They cut down trees and destroy lakes. They make homes and roads instead. Then the animals won’t have a place to live. They will die out.
+                The Iranian cheetah is among these animals. This wild animal lives only in the plains of Iran. Now there are only a few Iranian cheetahs alive. If people take care of them, there is hope for this beautiful animal to live.
+                Recently, families pay more attention to nature, students learn about saving wildlife, and some hunters don’t go hunting anymore. In this way, the number of cheetahs is going to increase in the future.
+            </p>
+        </section>
+
+        <!-- Quiz Section -->
+        <section class="quiz">
+            <h2>Quiz</h2>
+
+            <!-- True/False Questions -->
+            <div class="true-false">
+                <h3>True/False Questions</h3>
+                <form id="trueFalseForm">
+                    <label>
+                        1. There are no Iranian cheetahs alive today.
+                        <input type="text" id="tf1" placeholder="True or False">
+                    </label><br>
+                    <label>
+                        2. Humans destroy the homes of animals when they build houses and roads.
+                        <input type="text" id="tf2" placeholder="True or False">
+                    </label><br>
+                    <label>
+                        3. Students are learning about saving wildlife to help increase the number of Iranian cheetahs.
+                        <input type="text" id="tf3" placeholder="True or False">
+                    </label>
+                </form>
+            </div>
+
+            <!-- Multiple-Choice Questions -->
+            <div class="multiple-choice">
+                <h3>Multiple-Choice Questions</h3>
+                <form id="mcForm">
+                    <label>
+                        1. Why are there fewer animals like whales, pandas, and tigers today?<br>
+                        <select id="mc1">
+                            <option value="A">A) They live in cold areas.</option>
+                            <option value="B">B) Humans destroy their natural homes.</option>
+                            <option value="C">C) They can’t find enough food.</option>
+                        </select>
+                    </label><br><br>
+
+                    <label>
+                        2. Where does the Iranian cheetah live?<br>
+                        <select id="mc2">
+                            <option value="A">A) Only in the plains of Iran</option>
+                            <option value="B">B) In forests around the world</option>
+                            <option value="C">C) In the lakes of Iran</option>
+                        </select>
+                    </label><br><br>
+
+                    <label>
+                        3. What is happening to help Iranian cheetahs?<br>
+                        <select id="mc3">
+                            <option value="A">A) People are hunting them more.</option>
+                            <option value="B">B) Families and students are paying attention to wildlife.</option>
+                            <option value="C">C) They are moving to other countries.</option>
+                        </select>
+                    </label>
+                </form>
+            </div>
+            <button onclick="checkAnswers()">Submit Answers</button>
+            <p>برای رفتن به صفحه دوم روی لینک زیر کلیک کنید:</p>
+            <a href="next.html" class="btn" >صفحه دوم</a>
+        </section>
+
+        <!-- Admin Section -->
+        <section class="admin" id="adminSection">
+            <h2>Admin Panel (Restricted Access)</h2>
+            <label for="adminPassword">Enter Admin Password:</label>
+            <input type="password" id="adminPassword">
+            <button onclick="showResults()">Access Results</button>
+            <div id="result"></div>
+        </section>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            tf: ["False", "True", "True"],
+            mc: ["B", "A", "B"]
+        };
+
+        function checkAnswers() {
+            const tfResults = [];
+            const mcResults = [];
+
+            // Check True/False
+            for (let i = 1; i <= 3; i++) {
+                const userAnswer = document.getElementById(`tf${i}`).value.trim();
+                tfResults.push(userAnswer === correctAnswers.tf[i - 1] ? "Correct" : "Incorrect");
+            }
+
+            // Check Multiple-Choice
+            for (let i = 1; i <= 3; i++) {
+                const userAnswer = document.getElementById(`mc${i}`).value;
+                mcResults.push(userAnswer === correctAnswers.mc[i - 1] ? "Correct" : "Incorrect");
+            }
+
+            // Save results in session storage
+            sessionStorage.setItem("tfResults", JSON.stringify(tfResults));
+            sessionStorage.setItem("mcResults", JSON.stringify(mcResults));
+
+            alert("Your answers have been submitted!");
+        }
+
+        function showResults() {
+            const password = document.getElementById("adminPassword").value;
+            if (password === "admin123") {
+                const tfResults = JSON.parse(sessionStorage.getItem("tfResults"));
+                const mcResults = JSON.parse(sessionStorage.getItem("mcResults"));
+
+                let result = "<h3>Results:</h3>";
+                tfResults.forEach((res, i) => result += `TF${i + 1}: ${res}<br>`);
+                mcResults.forEach((res, i) => result += `MC${i + 1}: ${res}<br>`);
+
+                document.getElementById("result").innerHTML = result;
+            } else {
+                alert("Incorrect password!");
+            }
+        }
+    </script>
+</body>
+</html>
